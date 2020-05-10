@@ -55,7 +55,7 @@ public class RegistrarUsuario {
 
 	public String registrar() {
 		addMessage("Usuario registrado exitosamente!!");
-		return ("Ok");
+		return ("Ok...");
 	}
 
 	public void addMessage(String summary) {
