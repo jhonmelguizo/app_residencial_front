@@ -1,18 +1,66 @@
 package com.app.residencial.frontResidencial.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Named;
 
-@RestController
-@RequestMapping("/registraUsuario")
+@Named("registrar")
 public class RegistrarUsuario {
-	
-	@RequestMapping(method=RequestMethod.GET)
-	public String registrar() {
-		return("Hola Mundooo Prueba");
+
+	private String TipoDocumento = "";
+	private String NumeroDocumento;
+	private String DirEnvio;
+	private String Telefono;
+	private String Celular;
+
+	public String getTipoDocumento() {
+		return TipoDocumento;
 	}
-	
-	
+
+	public void setTipoDocumento(String tipoDocumento) {
+		TipoDocumento = tipoDocumento;
+	}
+
+	public String getNumeroDocumento() {
+		return NumeroDocumento;
+	}
+
+	public void setNumeroDocumento(String numeroDocumento) {
+		NumeroDocumento = numeroDocumento;
+	}
+
+	public String getDirEnvio() {
+		return DirEnvio;
+	}
+
+	public void setDirEnvio(String dirEnvio) {
+		DirEnvio = dirEnvio;
+	}
+
+	public String getTelefono() {
+		return Telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		Telefono = telefono;
+	}
+
+	public String getCelular() {
+		return Celular;
+	}
+
+	public void setCelular(String celular) {
+		Celular = celular;
+	}
+
+	public String registrar() {
+		addMessage("Usuario registrado exitosamente!!");
+		return ("Ok");
+	}
+
+	public void addMessage(String summary) {
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+		FacesContext.getCurrentInstance().addMessage(null, message);
+	}
 
 }
