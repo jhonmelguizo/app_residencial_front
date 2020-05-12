@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:h="http://java.sun.com/jsf/html"
+ xmlns:f="http://java.sun.com/jsf/core"
+ xmlns:p="http://primefaces.org/ui">
+
+ <h:head>
+ </h:head>
+
+ <h:body>
+  <h:form>
+        <h:outputLabel value="Escribe algo: ">
+            <h:inputText id="message" value="#{loginbean.message}"/>
+        </h:outputLabel>
+
+        <h:commandButton value="Mensaje fuera de form Ajax">
+            <f:ajax execute="message" render="idSalida" />
+        </h:commandButton>
+        
+        <br />
+        <h:inputText id="valor" value="#{loginbean.username}"/>
+        <h:commandButton value="Mensaje2 fuera de form Ajax">
+            <f:ajax execute="valor" render="idSalida2" />
+        </h:commandButton>
+    </h:form>
+
+    <p><h:outputText id="idSalida" value="#{loginbean.message}" /></p>
+    <p><h:outputText id="idSalida2" value="#{loginbean.accion}" /></p>
+ </h:body>
+</html>

@@ -9,9 +9,13 @@ public class RegistrarUsuario {
 
 	private String TipoDocumento = "";
 	private String NumeroDocumento;
+	private String Nombres;
+	private String Apellidos;
+	private String Email;
 	private String DirEnvio;
 	private String Telefono;
 	private String Celular;
+	
 
 	public String getTipoDocumento() {
 		return TipoDocumento;
@@ -27,6 +31,30 @@ public class RegistrarUsuario {
 
 	public void setNumeroDocumento(String numeroDocumento) {
 		NumeroDocumento = numeroDocumento;
+	}
+	
+	public String getNombres() {
+		return Nombres;
+	}
+
+	public void setNombres(String nombres) {
+		Nombres = nombres;
+	}
+
+	public String getApellidos() {
+		return Apellidos;
+	}
+
+	public void setApellidos(String apellidos) {
+		Apellidos = apellidos;
+	}
+	
+	public String getEmail() {
+		return Email;
+	}
+
+	public void setEmail(String email) {
+		Email = email;
 	}
 
 	public String getDirEnvio() {
@@ -51,7 +79,8 @@ public class RegistrarUsuario {
 
 	public void setCelular(String celular) {
 		Celular = celular;
-	}
+	}	
+		
 
 	public String registrar() {
 		addMessage("Usuario registrado exitosamente!!");
