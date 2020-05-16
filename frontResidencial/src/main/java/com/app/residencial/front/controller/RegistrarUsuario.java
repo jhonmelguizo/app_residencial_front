@@ -107,7 +107,7 @@ public class RegistrarUsuario {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	public String consumirServicio() {
+	public String consumirServicioGET() {
 
 		final String uri = "https://gturnquist-quoters.cfapps.io/api/random";
 
