@@ -1,7 +1,10 @@
 package com.app.residencial.front.controller;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -17,12 +20,12 @@ import org.springframework.web.client.RestTemplate;
 
 import com.app.residencial.front.config.UrisConfig;
 import com.app.residencial.front.entities.ResponseRest;
+import com.app.residencial.front.entities.Rol;
 import com.app.residencial.front.entities.User;
-
 
 @Named("registrar")
 public class RegistrarUsuario {
-	
+
 	private String TipoDocumento = "";
 	private String NumeroDocumento;
 	private String Nombres;
@@ -31,7 +34,8 @@ public class RegistrarUsuario {
 	private String DirEnvio;
 	private String Telefono;
 	private String Celular;
-	
+	private String estado;
+	private String rol;
 
 	public String getTipoDocumento() {
 		return TipoDocumento;
@@ -48,7 +52,7 @@ public class RegistrarUsuario {
 	public void setNumeroDocumento(String numeroDocumento) {
 		NumeroDocumento = numeroDocumento;
 	}
-	
+
 	public String getNombres() {
 		return Nombres;
 	}
@@ -64,7 +68,7 @@ public class RegistrarUsuario {
 	public void setApellidos(String apellidos) {
 		Apellidos = apellidos;
 	}
-	
+
 	public String getEmail() {
 		return Email;
 	}
@@ -95,65 +99,95 @@ public class RegistrarUsuario {
 
 	public void setCelular(String celular) {
 		Celular = celular;
-	}	
-		
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public String getRol() {
+		return rol;
+	}
+
+	public void setRol(String rol) {
+		this.rol = rol;
+	}
+
+	public Map<String, String> getRoles() {
+		return roles;
+	}
 
 	@Bean
 	public RestTemplate restTemplate() {
-	    return new RestTemplate();
+		return new RestTemplate();
 	}
-	
 
 	@Autowired
 	private RestTemplate restTemplate;
-	
-	public String consumirServicioGET() {
 
-		final String uri = "https://gturnquist-quoters.cfapps.io/api/random";
-
-		String result = restTemplate.getForObject(uri, String.class);		
-		
-		return result;
-		
-	}
-	
-	
 	public String registrar() {
-		
-		
+
 		// create headers
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		
-		User user = new User(this.TipoDocumento, this.NumeroDocumento, this.Nombres, this.Apellidos,
-				this.Email, this.DirEnvio, Long.parseLong(this.Telefono), Long.parseLong(this.Celular));
-		
+
+		User user = new User(this.TipoDocumento, this.NumeroDocumento, this.Nombres, this.Apellidos, this.Email,
+				this.DirEnvio, Long.parseLong(this.Telefono), Long.parseLong(this.Celular), this.estado);
+
 		// build the request
 		HttpEntity<User> request = new HttpEntity<>(user, headers);
-		
-		// send POST request	
-		ResponseEntity<ResponseRest> response = restTemplate.postForEntity(UrisConfig.getEndpoint_createUser(), request, ResponseRest.class);
-				
+
+		// send POST request
+		ResponseEntity<ResponseRest> response = restTemplate.postForEntity(UrisConfig.getEndpoint_createUser(), request,
+				ResponseRest.class);
+
 		// check response
 		if (response.getStatusCode() == HttpStatus.OK) {
-		    System.out.println("Post Created");
-		    System.out.println(response.getBody().getMensaje());
-		    System.out.println(response.getBody().getCodigo());
-		    addMessage(response.getBody().getMensaje());
+			System.out.println("Post Created");
+			System.out.println(response.getBody().getMensaje());
+			System.out.println(response.getBody().getCodigo());
+			addMessage(response.getBody().getMensaje());
 		} else {
-		    System.out.println("Request Failed");
-		    System.out.println(response.getStatusCode());
-		    addMessage("Ocurrió un error creando el usuario: " + response.getStatusCode());
-		}		
-		
+			System.out.println("Request Failed");
+			System.out.println(response.getStatusCode());
+			addMessage("Ocurrió un error creando el usuario: " + response.getStatusCode());
+		}
+
 		return ("Ok...");
-	}					
-		
+	}
 
 	public void addMessage(String summary) {
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
 		FacesContext.getCurrentInstance().addMessage(null, message);
+	}
+
+	public Rol[] obtenerListaRoles() {
+
+		Rol[] result = restTemplate.getForObject(UrisConfig.getEndpoint_getListRoles(), Rol[].class);
+
+		return result;
+
+	}
+
+	private Map<String, String> roles = new HashMap<String, String>();
+
+	@PostConstruct
+	public void init() {
+		
+		Rol[] listaRoles = this.obtenerListaRoles();
+		roles = new HashMap<String, String>();
+		
+		for (Rol masterRol : listaRoles) {
+		    //System.out.println(masterRol.getRole());
+			roles.put(masterRol.getRole(), masterRol.getId());
+		}
+						
+
 	}
 
 }
