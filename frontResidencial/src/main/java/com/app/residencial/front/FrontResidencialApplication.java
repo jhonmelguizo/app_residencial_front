@@ -1,4 +1,4 @@
-package com.app.residencial.frontResidencial;
+package com.app.residencial.front;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

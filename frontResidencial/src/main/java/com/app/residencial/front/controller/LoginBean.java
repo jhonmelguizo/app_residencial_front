@@ -1,4 +1,4 @@
-package com.app.residencial.frontResidencial.controller;
+package com.app.residencial.front.controller;
 
 import java.io.Serializable;
 
