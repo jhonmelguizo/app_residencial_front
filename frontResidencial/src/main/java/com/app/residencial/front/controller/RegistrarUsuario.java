@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.app.residencial.front.config.UrisConfig;
+import com.app.residencial.front.entities.ResponseRest;
 import com.app.residencial.front.entities.User;
 
 
@@ -131,19 +132,21 @@ public class RegistrarUsuario {
 		// build the request
 		HttpEntity<User> request = new HttpEntity<>(user, headers);
 		
-		// send POST request
-		ResponseEntity<User> response = restTemplate.postForEntity(UrisConfig.getEndpoint_createUser(), request, User.class);
-		
+		// send POST request	
+		ResponseEntity<ResponseRest> response = restTemplate.postForEntity(UrisConfig.getEndpoint_createUser(), request, ResponseRest.class);
+				
 		// check response
-		if (response.getStatusCode() == HttpStatus.CREATED) {
+		if (response.getStatusCode() == HttpStatus.OK) {
 		    System.out.println("Post Created");
-		    System.out.println(response.getBody());
+		    System.out.println(response.getBody().getMensaje());
+		    System.out.println(response.getBody().getCodigo());
+		    addMessage(response.getBody().getMensaje());
 		} else {
 		    System.out.println("Request Failed");
 		    System.out.println(response.getStatusCode());
-		}
+		    addMessage("Ocurrió un error creando el usuario: " + response.getStatusCode());
+		}		
 		
-		addMessage("Usuario registrado exitosamente!!" + this.Celular);
 		return ("Ok...");
 	}					
 		

@@ -4,7 +4,7 @@ public class UrisConfig {
 	
 	private static String url_server = "http://localhost:8080";
 	
-	private static String endpoint_createUser = "/api/registrarusuario";
+	private static String endpoint_createUser = "/api/createuser";
 
 	public static String getUrl_server() {
 		return url_server;
