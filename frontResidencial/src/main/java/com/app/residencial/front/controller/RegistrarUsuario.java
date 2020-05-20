@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import com.app.residencial.front.config.UrisConfig;
 import com.app.residencial.front.entities.ResponseRest;
 import com.app.residencial.front.entities.Rol;
+import com.app.residencial.front.entities.State;
 import com.app.residencial.front.entities.User;
 
 @Named("registrar")
@@ -34,8 +35,17 @@ public class RegistrarUsuario {
 	private String DirEnvio;
 	private String Telefono;
 	private String Celular;
-	private String estado;
+	private Integer state;
 	private String rol;
+	
+	public Integer getState() {
+		return state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
+	}
+	
 
 	public String getTipoDocumento() {
 		return TipoDocumento;
@@ -101,12 +111,8 @@ public class RegistrarUsuario {
 		Celular = celular;
 	}
 
-	public String getEstado() {
-		return estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
+	public Map<String, Integer> getStates() {
+		return states;
 	}
 
 	public String getRol() {
@@ -137,7 +143,7 @@ public class RegistrarUsuario {
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
 		User user = new User(this.TipoDocumento, this.NumeroDocumento, this.Nombres, this.Apellidos, this.Email,
-				this.DirEnvio, Long.parseLong(this.Telefono), Long.parseLong(this.Celular), this.estado);
+				this.DirEnvio, Long.parseLong(this.Telefono), Long.parseLong(this.Celular), this.state);
 
 		// build the request
 		HttpEntity<User> request = new HttpEntity<>(user, headers);
@@ -173,12 +179,22 @@ public class RegistrarUsuario {
 		return result;
 
 	}
+	
+	public State[] getListUsersStates() {
+
+		State[] result = restTemplate.getForObject(UrisConfig.getEndpoint_getListStatesUser(), State[].class);
+
+		return result;
+
+	}
 
 	private Map<String, String> roles = new HashMap<String, String>();
+	private Map<String, Integer> states = new HashMap<String, Integer>();
 
 	@PostConstruct
 	public void init() {
 		
+		// Lista de Roles		
 		Rol[] listaRoles = this.obtenerListaRoles();
 		roles = new HashMap<String, String>();
 		
@@ -186,6 +202,16 @@ public class RegistrarUsuario {
 		    //System.out.println(masterRol.getRole());
 			roles.put(masterRol.getRole(), masterRol.getId());
 		}
+		
+		//List States User
+		State[] listStates = this.getListUsersStates();
+		states = new HashMap<String, Integer>();
+		
+		for (State masterStates : listStates) {
+		    //System.out.println(masterRol.getRole());
+			states.put(masterStates.getName(), masterStates.getId());
+		}
+		
 						
 
 	}

@@ -6,8 +6,17 @@ public class UrisConfig {
 	
 	private static String endpoint_createUser = "/api/createuser";
 	private static String endpoint_getListRoles = "/api/role";
+	private static String endpoint_getListStatesUser = "/api/getuserstates";
 
 
+
+	public static String getEndpoint_getListStatesUser() {
+		return  url_server + endpoint_getListStatesUser;
+	}
+
+	public static void setEndpoint_getListStatesUser(String endpoint_getListStatesUser) {
+		UrisConfig.endpoint_getListStatesUser = endpoint_getListStatesUser;
+	}
 
 	public static String getEndpoint_getListRoles() {
 		return url_server + endpoint_getListRoles;

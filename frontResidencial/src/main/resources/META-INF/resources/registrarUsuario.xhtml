@@ -43,11 +43,13 @@
 					<p:inputText id="idTel" value="#{registrar.telefono}" />
 					<p:outputLabel value="Celular" />
 					<p:inputText id="idCel" value="#{registrar.celular}" />
-					<p:outputLabel for="estatusUser" value="Estado:" />
-					<p:selectOneListbox id="estatusUser" value="#{registrar.estado}">
-						<f:selectItem itemLabel="Activo" itemValue="A" />
-						<f:selectItem itemLabel="Inactivo" itemValue="I" />
-					</p:selectOneListbox>
+
+					<p:outputLabel for="@next" value="Estado usuario: " />
+					<p:selectOneMenu id="sateUser" value="#{registrar.state}" effect="fold"
+						editable="false">
+						<f:selectItem itemLabel="Seleccione una opción" itemValue="" />
+						<f:selectItems value="#{registrar.states}" />
+					</p:selectOneMenu>					
 					<p:growl id="growl" life="2000" />
 					<p:commandButton value="Registrar" id="ajax" update="growl"
 						action="#{registrar.registrar}" style="margin-right:20px;"
@@ -59,8 +61,8 @@
 			<h:panelGrid columns="2" cellpadding="10">
 				<p:graphicImage name="demo/images/godfather/godfather2.jpg" />
 				<p:outputLabel for="@next" value="Asociar role: " />
-				<p:selectOneMenu id="rol" value="#{registrar.rol}"
-					effect="fold" editable="false">
+				<p:selectOneMenu id="rol" value="#{registrar.rol}" effect="fold"
+					editable="false">
 					<f:selectItem itemLabel="Seleccione una opción" itemValue="" />
 					<f:selectItems value="#{registrar.roles}" />
 				</p:selectOneMenu>

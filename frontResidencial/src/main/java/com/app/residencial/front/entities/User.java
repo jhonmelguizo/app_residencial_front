@@ -10,14 +10,14 @@ public class User {
 	private String address;
 	private long phone;
 	private long movil;
-	private String state;
+	private int fkstate;
 
 	// Constructor
 	public User() {
 	}
-
+	
 	public User(String typedocument, String document, String names, String lastnames, String emails, String address,
-			long phone, long movil, String state) {
+			long phone, long movil, int fkstate) {
 		this.typedocument = typedocument;
 		this.document = document;
 		this.names = names;
@@ -26,17 +26,17 @@ public class User {
 		this.address = address;
 		this.phone = phone;
 		this.movil = movil;
-		this.state = state;
+		this.fkstate = fkstate;
 	}
 
-
-	public String getState() {
-		return state;
+	public int getFkstate() {
+		return fkstate;
 	}
 
-	public void setState(String state) {
-		this.state = state;
+	public void setFkstate(int fkstate) {
+		this.fkstate = fkstate;
 	}
+	
 
 	public String getTypedocument() {
 		return typedocument;
