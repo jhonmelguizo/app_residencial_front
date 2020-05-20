@@ -66,6 +66,10 @@
 					<f:selectItem itemLabel="Seleccione una opción" itemValue="" />
 					<f:selectItems value="#{registrar.roles}" />
 				</p:selectOneMenu>
+				<p:growl id="growl2" life="2000" />
+				<p:commandButton value="ProbarBean" id="ajax" update="growl2"
+						action="#{asociarroles.ejecutar}" style="margin-right:20px;"
+						styleClass="ui-priority-primary" />
 			</h:panelGrid>
 		</p:tab>
 		<p:tab title="Propiedades">
