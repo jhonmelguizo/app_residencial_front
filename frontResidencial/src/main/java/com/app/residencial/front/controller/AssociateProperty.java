@@ -10,6 +10,7 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,8 @@ public class AssociateProperty {
 	private List<PropertyxUser> listproxuser;
 
 	@Autowired
-	private RestTemplate restTemplate;
+	@Qualifier("restTemplateProperty")
+	private RestTemplate restTemplateProperty;
 
 	public String getName() {
 		return name;
@@ -85,6 +87,7 @@ public class AssociateProperty {
 	}
 
 	@Bean
+	@Qualifier("restTemplateProperty")
 	public RestTemplate restTemplateProperty() {
 		return new RestTemplate();
 	}
@@ -117,7 +120,7 @@ public class AssociateProperty {
 
 	public TypeProperty[] getlistypeproperty() {
 
-		TypeProperty[] result = restTemplate.getForObject(UrisConfig.getEndpoint_getPropertiesType(),
+		TypeProperty[] result = restTemplateProperty.getForObject(UrisConfig.getEndpoint_getPropertiesType(),
 				TypeProperty[].class);
 
 		return result;
@@ -127,7 +130,7 @@ public class AssociateProperty {
 	public PropertyxUser[] getlistpropertyxuser(String document) {
 		String ruta=UrisConfig.getEndpoint_getListPropertyxUser()+document;
 		System.out.print("ruta"+ruta);
-		PropertyxUser[] result =  restTemplate.getForObject(ruta,PropertyxUser[].class);
+		PropertyxUser[] result =  restTemplateProperty.getForObject(ruta,PropertyxUser[].class);
 		
 		return result;
 
@@ -141,7 +144,7 @@ public class AssociateProperty {
 		HttpEntity<Property> request = new HttpEntity<>(property, GlobalUtil.getheaders());
 
 		// send POST request
-		ResponseEntity<ResponseRest> response = restTemplate.postForEntity(UrisConfig.getEndpoint_createProperty(), request,
+		ResponseEntity<ResponseRest> response = restTemplateProperty.postForEntity(UrisConfig.getEndpoint_createProperty(), request,
 				ResponseRest.class);
 		
 		// check response

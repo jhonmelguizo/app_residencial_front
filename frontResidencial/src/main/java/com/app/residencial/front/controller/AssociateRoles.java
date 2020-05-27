@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -52,12 +53,14 @@ public class AssociateRoles {
 	}
 
 	@Bean
+	@Qualifier("restTemplateRoles")	
 	public RestTemplate restTemplateRol() {
 		return new RestTemplate();
 	}
 	
 	@Autowired
-	private RestTemplate restTemplate;
+	@Qualifier("restTemplateRoles")
+	private RestTemplate restTemplateRoles;
 
 	public String register(String document) {	
 		
@@ -74,7 +77,7 @@ public class AssociateRoles {
 		HttpEntity<RolUser> request = new HttpEntity<>(roluser, headers);
 
 		// send POST request
-		ResponseEntity<ResponseRest> response = restTemplate.postForEntity(UrisConfig.getEndpoint_associateRoleUser(), request,
+		ResponseEntity<ResponseRest> response = restTemplateRoles.postForEntity(UrisConfig.getEndpoint_associateRoleUser(), request,
 				ResponseRest.class);
 
 		// check response
@@ -103,7 +106,7 @@ public class AssociateRoles {
 	
 	public Rol[] obtenerListaRoles() {
 
-		Rol[] result = restTemplate.getForObject(UrisConfig.getEndpoint_getListRoles(), Rol[].class);
+		Rol[] result = restTemplateRoles.getForObject(UrisConfig.getEndpoint_getListRoles(), Rol[].class);
 
 		return result;
 
@@ -113,7 +116,7 @@ public class AssociateRoles {
 
 		String uri = UrisConfig.getEndpoint_getListRolesUser() + this.document;
 		
-		ListRolXUser[] result = restTemplate.getForObject(uri, ListRolXUser[].class);
+		ListRolXUser[] result = restTemplateRoles.getForObject(uri, ListRolXUser[].class);
 
 		return result;
 
