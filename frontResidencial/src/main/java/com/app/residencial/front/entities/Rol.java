@@ -2,13 +2,13 @@ package com.app.residencial.front.entities;
 
 public class Rol {
 	
-	private String id;
+	private Integer id;
 	private String role;
 	
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getRole() {

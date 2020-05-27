@@ -15,21 +15,6 @@ public class UrisConfig {
 
 
 
-	public static String getEndpoint_getListRolesUser() {
-		return url_server + endpoint_getListRolesUser;
-	}
-
-	public static void setEndpoint_getListRolesUser(String endpoint_getListRolesUser) {
-		UrisConfig.endpoint_getListRolesUser = endpoint_getListRolesUser;
-	}
-
-	public static String getEndpoint_associateRoleUser() {
-		return url_server + endpoint_associateRoleUser;
-	}
-
-	public static void setEndpoint_associateRoleUser(String endpoint_associateRoleUser) {
-		UrisConfig.endpoint_associateRoleUser = endpoint_associateRoleUser;
-	}
 	public static String getEndpoint_getListStatesUser() {
 		return  url_server + endpoint_getListStatesUser;
 	}

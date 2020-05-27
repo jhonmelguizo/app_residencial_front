@@ -58,19 +58,41 @@
 			</h:form>
 		</p:tab>
 		<p:tab title="Asociar Rol">
-			<h:panelGrid columns="2" cellpadding="10">
-				<p:graphicImage name="demo/images/godfather/godfather2.jpg" />
-				<p:outputLabel for="@next" value="Asociar role: " />
-				<p:selectOneMenu id="rol" value="#{registrar.rol}" effect="fold"
-					editable="false">
-					<f:selectItem itemLabel="Seleccione una opción" itemValue="" />
-					<f:selectItems value="#{registrar.roles}" />
-				</p:selectOneMenu>
-				<p:growl id="growl2" life="2000" />
-				<p:commandButton value="ProbarBean" id="ajax" update="growl2"
-					action="#{asociarroles.ejecutar}" style="margin-right:20px;"
-					styleClass="ui-priority-primary" />
-			</h:panelGrid>
+			<h:form>
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:graphicImage name="demo/images/godfather/godfather2.jpg" />
+					<p:outputLabel for="@next" value="Asociar role: " />
+					<p:selectOneMenu id="rolxUser" value="#{associaterole.rolid}"
+						effect="fold" editable="false">
+						<f:selectItems value="#{associaterole.roles}" />
+					</p:selectOneMenu>
+					<p:growl id="growl2" life="2000" />
+					<p:commandButton value="Asociar Rol" id="ajax" update="basicDT"
+						action="#{associaterole.register(registrar.numeroDocumento)}"
+						style="margin-right:20px;" styleClass="ui-priority-primary" />
+				</h:panelGrid>
+
+
+				<p:growl id="msgs" showDetail="true"
+					skipDetailIfEqualsSummary="true" />
+
+				<p:dataTable id="basicDT" var="listrol" value="#{associaterole.listRolXUser}">
+					<f:facet name="header">
+            Roles Asociados
+        </f:facet>
+					<p:column headerText="Id">
+						<h:outputText value="#{listrol.id}" />
+					</p:column>
+					<p:column headerText="Role">
+						<h:outputText value="#{listrol.role}" />
+					</p:column>
+					<p:column style="width:32px;text-align: center">
+						
+					</p:column>
+				</p:dataTable>
+
+			</h:form>
+
 		</p:tab>
 		<p:tab title="Propiedades">
 			<h:form>

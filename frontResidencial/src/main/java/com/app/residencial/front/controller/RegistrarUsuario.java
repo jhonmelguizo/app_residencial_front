@@ -20,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.app.residencial.front.config.UrisConfig;
 import com.app.residencial.front.entities.ResponseRest;
-import com.app.residencial.front.entities.Rol;
 import com.app.residencial.front.entities.State;
 import com.app.residencial.front.entities.User;
 
@@ -36,7 +35,7 @@ public class RegistrarUsuario {
 	private String Telefono;
 	private String Celular;
 	private Integer state;
-	private String rol;
+
 	
 	public Integer getState() {
 		return state;
@@ -115,17 +114,7 @@ public class RegistrarUsuario {
 		return states;
 	}
 
-	public String getRol() {
-		return rol;
-	}
 
-	public void setRol(String rol) {
-		this.rol = rol;
-	}
-
-	public Map<String, String> getRoles() {
-		return roles;
-	}
 
 	@Bean
 	public RestTemplate restTemplate() {
@@ -172,13 +161,7 @@ public class RegistrarUsuario {
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 
-	public Rol[] obtenerListaRoles() {
 
-		Rol[] result = restTemplate.getForObject(UrisConfig.getEndpoint_getListRoles(), Rol[].class);
-
-		return result;
-
-	}
 	
 	public State[] getListUsersStates() {
 
@@ -188,21 +171,11 @@ public class RegistrarUsuario {
 
 	}
 
-	private Map<String, String> roles = new HashMap<String, String>();
 	private Map<String, Integer> states = new HashMap<String, Integer>();
-	
 
 	@PostConstruct
 	public void init() {
 		
-		// Lista de Roles		
-		Rol[] listaRoles = this.obtenerListaRoles();
-		roles = new HashMap<String, String>();
-		
-		for (Rol masterRol : listaRoles) {
-		    //System.out.println(masterRol.getRole());
-			roles.put(masterRol.getRole(), masterRol.getId());
-		}
 		
 		//List States User
 		State[] listStates = this.getListUsersStates();
@@ -215,11 +188,6 @@ public class RegistrarUsuario {
 		
 						
 
-	}
-	
-	public void probar()
-	{
-		System.out.print("este es el id"+this.rol);
 	}
 
 }
