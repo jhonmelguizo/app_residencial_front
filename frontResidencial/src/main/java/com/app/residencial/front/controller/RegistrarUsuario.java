@@ -190,6 +190,7 @@ public class RegistrarUsuario {
 
 	private Map<String, String> roles = new HashMap<String, String>();
 	private Map<String, Integer> states = new HashMap<String, Integer>();
+	
 
 	@PostConstruct
 	public void init() {
@@ -214,6 +215,11 @@ public class RegistrarUsuario {
 		
 						
 
+	}
+	
+	public void probar()
+	{
+		System.out.print("este es el id"+this.rol);
 	}
 
 }

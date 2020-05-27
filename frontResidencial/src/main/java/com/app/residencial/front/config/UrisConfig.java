@@ -7,6 +7,9 @@ public class UrisConfig {
 	private static String endpoint_createUser = "/api/createuser";
 	private static String endpoint_getListRoles = "/api/role";
 	private static String endpoint_getListStatesUser = "/api/getuserstates";
+	private static String endpoint_getPropertiesType="/api/getpropertiestype";
+	private static String endpoint_createProperty="/api/createproperty";
+	private static String endpoint_getListPropertyxUser="/api/propertyxuser/";
 
 
 
@@ -41,6 +44,38 @@ public class UrisConfig {
 	public static void setEndpoint_createUser(String endpoint_createUser) {
 		UrisConfig.endpoint_createUser = endpoint_createUser;
 	}
+
+	public static String getEndpoint_getPropertiesType() {
+		return url_server+endpoint_getPropertiesType;
+	}
+
+	public static void setEndpoint_getPropertiesType(String endpoint_getPropertiesType) {
+		UrisConfig.endpoint_getPropertiesType = endpoint_getPropertiesType;
+	}
+
+	public static String getEndpoint_createProperty() {
+		return url_server+endpoint_createProperty;
+	}
+
+	public static void setEndpoint_createProperty(String endpoint_createProperty) {
+		UrisConfig.endpoint_createProperty = endpoint_createProperty;
+	}
+
+	public static String getEndpoint_getListPropertyxUser() {
+		return url_server+endpoint_getListPropertyxUser;
+	}
+
+	public static void setEndpoint_getListPropertyxUser(String endpoint_getListPropertyxUser) {
+		UrisConfig.endpoint_getListPropertyxUser = endpoint_getListPropertyxUser;
+	}
+	
+	
+	
+	
+	
+	
+
+
 
 
 
