@@ -10,7 +10,8 @@
 
 	<p:tabView>
 		<p:tab title="Registrar Usuario">
-			<h:form>
+			<h:form>				
+				<p:message for="idNumDocumento" display="icon" />
 				<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
 					<p:graphicImage name="/imagenes/user_add.png" width="100"
 						height="100" />
@@ -22,27 +23,33 @@
 						<f:selectItem itemLabel="Cedula de Ciudadania" itemValue="CC" />
 						<f:selectItem itemLabel="Pasaporte" itemValue="PP" />
 						<f:selectItem itemLabel="Cedula de Extranjeria" itemValue="CE" />
-						<f:facet name="footer">
-							<p:separator />
-							<h:outputText value="3 Tipos de Documento"
-								style="font-weight:bold;" />
-						</f:facet>
 					</p:selectOneMenu>
-					<p:outputLabel value="Numero de Documento" />
-					<p:inputText id="idNumDocumento"
-						value="#{registrar.numeroDocumento}" />
-					<p:outputLabel value="Nombres" />
-					<p:inputText id="idnombres" value="#{registrar.nombres}" />
-					<p:outputLabel value="Apellidos" />
-					<p:inputText id="idapellidos" value="#{registrar.apellidos}" />
-					<p:outputLabel value="Email" />
-					<p:inputText id="idemail" value="#{registrar.email}" />
-					<p:outputLabel value="Dirección de Envío" />
-					<p:inputText id="idDireccionEnv" value="#{registrar.dirEnvio}" />
-					<p:outputLabel value="Teléfono" />
-					<p:inputText id="idTel" value="#{registrar.telefono}" />
-					<p:outputLabel value="Celular" />
-					<p:inputText id="idCel" value="#{registrar.celular}" />
+					<p:outputLabel for="idNumDocumento" value="Numero de Documento" />
+					<p:inputText id="idNumDocumento" value="#{registrar.numeroDocumento}" required="true">
+						<f:validateLength minimum="5" maximum="16" />
+					</p:inputText>
+					
+					<p:outputLabel for="idnombres" value="Nombres" />
+					<p:inputText id="idnombres" value="#{registrar.nombres}" required="true">
+					<f:validateLength minimum="5" maximum="30" />
+					</p:inputText>
+					<p:outputLabel for="idapellidos" value="Apellidos" />
+					<p:inputText id="idapellidos" value="#{registrar.apellidos}" required="true">
+					<f:validateLength minimum="5" maximum="30" />
+					</p:inputText>
+					<p:outputLabel for="idemail" value="Email" />
+					<p:inputText id="idemail" value="#{registrar.email}" validatorMessage="Por favor escriba un email válido" required="true">
+					<f:validateRegex
+                       pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+					</p:inputText>
+					<p:outputLabel for="idDireccionEnv" value="Dirección de Envío" />
+					<p:inputText id="idDireccionEnv" value="#{registrar.dirEnvio}" required="true">
+					<f:validateLength maximum="50" />
+					</p:inputText>
+					<p:outputLabel for="idTel" value="Teléfono" />					
+					<p:inputMask id="idTel" value="#{registrar.telefono}" mask="9999999" required="true"/>
+					<p:outputLabel for="idCel" value="Celular" />
+					<p:inputMask id="idCel" value="#{registrar.celular}" mask="9999999999" required="true"/>
 
 					<p:outputLabel for="@next" value="Estado usuario: " />
 					<p:selectOneMenu id="sateUser" value="#{registrar.state}"
@@ -60,7 +67,9 @@
 		<p:tab title="Asociar Rol">
 			<h:form>
 				<h:panelGrid columns="2" cellpadding="10">
-					<p:graphicImage name="demo/images/godfather/godfather2.jpg" />
+					<p:graphicImage name="/imagenes/user_rol.png" width="100"
+						height="100" />
+					<h:outputText value="Administración de roles por usuario" />
 					<p:outputLabel for="@next" value="Asociar role: " />
 					<p:selectOneMenu id="rolxUser" value="#{associaterole.rolid}"
 						effect="fold" editable="false">
@@ -76,7 +85,8 @@
 				<p:growl id="msgs" showDetail="true"
 					skipDetailIfEqualsSummary="true" />
 
-				<p:dataTable id="basicDT" var="listrol" value="#{associaterole.listRolXUser}">
+				<p:dataTable id="basicDT" var="listrol"
+					value="#{associaterole.listRolXUser}">
 					<f:facet name="header">
             Roles Asociados
         </f:facet>
@@ -87,7 +97,7 @@
 						<h:outputText value="#{listrol.role}" />
 					</p:column>
 					<p:column style="width:32px;text-align: center">
-						
+
 					</p:column>
 				</p:dataTable>
 
@@ -97,7 +107,9 @@
 		<p:tab title="Propiedades">
 			<h:form>
 				<h:panelGrid columns="2" cellpadding="10">
-
+					<p:graphicImage name="/imagenes/user_properties.png" width="100"
+						height="100" />
+					<h:outputText value="Administración de propiedades por usuario" />
 					<p:outputLabel value="Nombre de la propiedad" />
 					<p:inputText id="idNombrePropiedad"
 						value="#{associateproperty.name}" />
@@ -118,7 +130,8 @@
 				<p:growl id="msgs" showDetail="true"
 					skipDetailIfEqualsSummary="true" />
 
-				<p:dataTable id="basicDT" var="prop" value="#{associateproperty.listproxuser}" >
+				<p:dataTable id="basicDT" var="prop"
+					value="#{associateproperty.listproxuser}">
 					<f:facet name="header">
             		Propiedades del usuario
         			</f:facet>
@@ -130,8 +143,8 @@
 					</p:column>
 					<p:column headerText="Tipo">
 						<h:outputText value="#{prop.fktype}" />
-					</p:column>					
-					
+					</p:column>
+
 				</p:dataTable>
 			</h:form>
 		</p:tab>
