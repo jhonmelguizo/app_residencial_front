@@ -38,7 +38,6 @@ public class RegistrarUsuario {
 	private String Celular;
 	private Integer state;
 
-	
 	public Integer getState() {
 		return state;
 	}
@@ -46,7 +45,6 @@ public class RegistrarUsuario {
 	public void setState(Integer state) {
 		this.state = state;
 	}
-	
 
 	public String getTipoDocumento() {
 		return TipoDocumento;
@@ -116,17 +114,15 @@ public class RegistrarUsuario {
 		return states;
 	}
 
-
-
 	@Bean
-	@Qualifier("restTemplate")	
+	@Qualifier("restTemplate")
 	@Primary
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
 
 	@Autowired
-	@Qualifier("restTemplate")	
+	@Qualifier("restTemplate")
 	private RestTemplate restTemplate;
 
 	public String registrar() {
@@ -161,13 +157,33 @@ public class RegistrarUsuario {
 		return ("Ok...");
 	}
 
+	public String findUser() {
+
+		User user = this.getUser(this.getNumeroDocumento());
+		
+		if(user != null) {
+			addMessage("Usuario encontrado");
+			this.setNombres(user.getNames());
+			this.setApellidos(user.getLastnames());
+			this.setEmail(user.getEmail());
+			this.setDirEnvio(user.getAddress());
+			this.setTelefono(Long.toString(user.getPhone()));
+			this.setCelular(Long.toString(user.getMovil()));
+			this.setState(user.getFkstate());
+		}
+		else {
+			addMessage("Usuario no encontrado");
+		}
+		
+		return ("Ok");
+
+	}
+
 	public void addMessage(String summary) {
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 
-
-	
 	public State[] getListUsersStates() {
 
 		State[] result = restTemplate.getForObject(UrisConfig.getEndpoint_getListStatesUser(), State[].class);
@@ -176,22 +192,35 @@ public class RegistrarUsuario {
 
 	}
 
+	public User getUser(String document) {
+
+		try {
+
+			User result = restTemplate.getForObject(UrisConfig.getEndpoint_getUser() + document, User.class);
+
+			return result;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			User result = null;
+			return result;
+		}
+
+	}
+
 	private Map<String, Integer> states = new HashMap<String, Integer>();
 
 	@PostConstruct
 	public void init() {
-		
-		
-		//List States User
+
+		// List States User
 		State[] listStates = this.getListUsersStates();
 		states = new HashMap<String, Integer>();
-		
+
 		for (State masterStates : listStates) {
-		    //System.out.println(masterRol.getRole());
+			// System.out.println(masterRol.getRole());
 			states.put(masterStates.getName(), masterStates.getId());
 		}
-		
-						
 
 	}
 

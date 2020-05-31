@@ -12,8 +12,17 @@ public class UrisConfig {
 	private static String endpoint_getListPropertyxUser="/api/propertyxuser/";
 	private static String endpoint_associateRoleUser = "/api/insertrole";
 	private static String endpoint_getListRolesUser = "/api/rolexuser/";
+	private static String endpoint_getUser = "/api/users/";
 
 
+
+	public static String getEndpoint_getUser() {
+		return url_server + endpoint_getUser;
+	}
+
+	public static void setEndpoint_getUser(String endpoint_getUser) {
+		UrisConfig.endpoint_getUser = endpoint_getUser;
+	}
 
 	public static String getEndpoint_getListRolesUser() {
 		return url_server + endpoint_getListRolesUser;
