@@ -59,8 +59,7 @@
 
 					<p:outputLabel for="@next" value="Estado usuario: " />
 					<p:selectOneMenu id="sateUser" value="#{registrar.state}"
-						effect="fold" editable="false">
-						<f:selectItem itemLabel="Seleccione una opción" itemValue="" />
+						effect="fold" editable="false">						
 						<f:selectItems value="#{registrar.states}" />
 					</p:selectOneMenu>
 					<p:growl id="growl" life="2000" />
