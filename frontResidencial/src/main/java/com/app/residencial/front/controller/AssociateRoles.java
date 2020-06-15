@@ -61,35 +61,41 @@ public class AssociateRoles {
 
 	public String register(String document) {
 
-		this.document = document;
-
-		// create headers
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-		RolUser roluser = new RolUser(this.rolid, document);
-
-		// build the request
-		HttpEntity<RolUser> request = new HttpEntity<>(roluser, headers);
-
-		// send POST request
-		ResponseEntity<ResponseRest> response = restTemplateRoles
-				.postForEntity(UrisConfig.getEndpoint_associateRoleUser(), request, ResponseRest.class);
-
-		// check response
-		if (response.getStatusCode() == HttpStatus.OK) {
-			System.out.println("Post Created");
-			System.out.println(response.getBody().getMensaje());
-			System.out.println(response.getBody().getCodigo());
-			MessageService.addMessage(response.getBody().getMensaje());
-
-			this.loadRolesUser();
-
+		if (document.equals("")) {
+			MessageService.addMessage("Debe ingresar un numero de documento o consultar usuario");
 		} else {
-			System.out.println("Request Failed");
-			System.out.println(response.getStatusCode());
-			MessageService.addMessage("Ocurrió un error creando el usuario: " + response.getStatusCode());
+
+			this.document = document;
+
+			// create headers
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+			RolUser roluser = new RolUser(this.rolid, document);
+
+			// build the request
+			HttpEntity<RolUser> request = new HttpEntity<>(roluser, headers);
+
+			// send POST request
+			ResponseEntity<ResponseRest> response = restTemplateRoles
+					.postForEntity(UrisConfig.getEndpoint_associateRoleUser(), request, ResponseRest.class);
+
+			// check response
+			if (response.getStatusCode() == HttpStatus.OK) {
+				System.out.println("Post Created");
+				System.out.println(response.getBody().getMensaje());
+				System.out.println(response.getBody().getCodigo());
+				MessageService.addMessage(response.getBody().getMensaje());
+
+				this.loadRolesUser();
+
+			} else {
+				System.out.println("Request Failed");
+				System.out.println(response.getStatusCode());
+				MessageService.addMessage("Ocurrió un error creando el usuario: " + response.getStatusCode());
+			}
+
 		}
 
 		return ("Ok...");
@@ -97,14 +103,13 @@ public class AssociateRoles {
 	}
 
 	public String delete(String id) {
-		
 
 		String uri = UrisConfig.getEndpoint_deleteRoleUser() + id;
 
 		ResponseRest response = restTemplateRoles.getForObject(uri, ResponseRest.class);
 
 		// check response
-		if (response.getCodigo().equals("001")) {			
+		if (response.getCodigo().equals("001")) {
 			MessageService.addMessage("Se eliminó el rol: " + id + " con éxito");
 			this.loadRolesUser();
 		} else {

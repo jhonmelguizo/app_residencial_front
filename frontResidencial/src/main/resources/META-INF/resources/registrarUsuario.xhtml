@@ -98,7 +98,7 @@
 					<p:column headerText="Role">
 						<h:outputText value="#{listrol.role}" />
 					</p:column>
-					<p:column style="text-align: center" >	     
+					<p:column style="text-align: center" headerText="Opciones" >	     
 					    <p:commandButton id="Remove" value="Eliminar" action="#{associaterole.delete(listrol.id)}" update="basicDT" icon="fa fa-fw fa-remove">
 					        <p:confirm header="Confirmar" message="Está seguro de eliminar el rol?" icon="fa fa-fw fa-bell-o" />
 					    </p:commandButton>					     					    
@@ -124,7 +124,6 @@
 					<p:selectOneMenu id="listypeproperty"
 						value="#{associateproperty.idtypeproperty}" effect="fold"
 						editable="false">
-						<f:selectItem itemLabel="Seleccione una opción" itemValue="" />
 						<f:selectItems value="#{associateproperty.listtypeproperty}" />
 					</p:selectOneMenu>
 					<p:growl id="growlproperty" life="2000" />
@@ -149,7 +148,7 @@
 					<p:column headerText="Tipo">
 						<h:outputText value="#{prop.fktype}" />
 					</p:column>
-					<p:column style="text-align: center" >	     
+					<p:column style="text-align: center" headerText="Opciones" >	     
 					    <p:commandButton id="RemovePropertie" value="Eliminar" action="#{associateproperty.delete(prop.id)}" update="basicDT2" icon="fa fa-fw fa-remove">
 					        <p:confirm header="Confirmar" message="Está seguro de eliminar la propiedad?" icon="fa fa-fw fa-bell-o" />
 					    </p:commandButton>					     					    

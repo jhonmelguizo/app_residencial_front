@@ -95,17 +95,17 @@ public class AssociateProperty {
 
 			listtypeproperty.put(mastertypeproperty.getName(), mastertypeproperty.getId());
 		}
-		
-		this.listproxuser =new ArrayList<PropertyxUser>();
+
+		this.listproxuser = new ArrayList<PropertyxUser>();
 		PropertyxUser[] listproxuser = this.getlistpropertyxuser("3442");
 		for (PropertyxUser masterproxuser : listproxuser) {
 
 			System.out.print("Paso por lista");
 			this.listproxuser.add(masterproxuser);
 		}
-		
-		System.out.print("Esta es la cantidad"+this.listproxuser.size());
-	
+
+		System.out.print("Esta es la cantidad" + this.listproxuser.size());
+
 	}
 
 	public TypeProperty[] getlistypeproperty() {
@@ -116,71 +116,74 @@ public class AssociateProperty {
 		return result;
 
 	}
-	
+
 	public PropertyxUser[] getlistpropertyxuser(String document) {
-		String ruta=UrisConfig.getEndpoint_getListPropertyxUser()+document;
-		System.out.print("ruta"+ruta);
-		PropertyxUser[] result =  restTemplateProperty.getForObject(ruta,PropertyxUser[].class);
-		
+		String ruta = UrisConfig.getEndpoint_getListPropertyxUser() + document;
+		System.out.print("ruta" + ruta);
+		PropertyxUser[] result = restTemplateProperty.getForObject(ruta, PropertyxUser[].class);
+
 		return result;
 
 	}
 
 	public String addproperty(String document) {
-		
-		this.document = document;
 
-		System.out.print("este es el id"+document+ "Este es el idproperty"+ this.idtypeproperty+ "name"+this.name);
-		Property property = new Property(this.name, this.idtypeproperty, document);
-		// build the request
-		HttpEntity<Property> request = new HttpEntity<>(property, GlobalUtil.getheaders());
+		if (document.equals("") || this.getName().equals("")) {
+			MessageService.addMessage("Por favor verifique que exista un numero de documento o el nombre de la propiedad no esté vacio");
+		} else {
 
-		// send POST request
-		ResponseEntity<ResponseRest> response = restTemplateProperty.postForEntity(UrisConfig.getEndpoint_createProperty(), request,
-				ResponseRest.class);
-		
-		// check response
-				if (response.getStatusCode() == HttpStatus.OK) {
-					System.out.println("Post Created");
-					System.out.println(response.getBody().getMensaje());
-					System.out.println(response.getBody().getCodigo());
-					this.setdatagrid(document);
-					MessageService.addMessage(response.getBody().getMensaje());
-					
-				
-				} else {
-					System.out.println("Request Failed");
-					System.out.println(response.getStatusCode());
-					MessageService.addMessage(response.getBody().getMensaje());
-				}
-			
-				return ("Ok...");
-		
-	
+			this.document = document;
+
+			System.out.print(
+					"este es el id" + document + "Este es el idproperty" + this.idtypeproperty + "name" + this.name);
+			Property property = new Property(this.name, this.idtypeproperty, document);
+			// build the request
+			HttpEntity<Property> request = new HttpEntity<>(property, GlobalUtil.getheaders());
+
+			// send POST request
+			ResponseEntity<ResponseRest> response = restTemplateProperty
+					.postForEntity(UrisConfig.getEndpoint_createProperty(), request, ResponseRest.class);
+
+			// check response
+			if (response.getStatusCode() == HttpStatus.OK) {
+				System.out.println("Post Created");
+				System.out.println(response.getBody().getMensaje());
+				System.out.println(response.getBody().getCodigo());
+				this.setdatagrid(document);
+				MessageService.addMessage(response.getBody().getMensaje());
+
+			} else {
+				System.out.println("Request Failed");
+				System.out.println(response.getStatusCode());
+				MessageService.addMessage(response.getBody().getMensaje());
+			}
+
+		}
+
+		return ("Ok...");
 
 	}
-	
-	public void setdatagrid(String document)
-	{
-		
-		this.listproxuser =new ArrayList<PropertyxUser>();
+
+	public void setdatagrid(String document) {
+
+		this.listproxuser = new ArrayList<PropertyxUser>();
 		PropertyxUser[] listproxuser = this.getlistpropertyxuser(document);
 		for (PropertyxUser masterproxuser : listproxuser) {
 
 			System.out.print("Paso por lista");
 			this.listproxuser.add(masterproxuser);
 		}
-		
+
 	}
-	
-public String delete(String id) {		
+
+	public String delete(String id) {
 
 		String uri = UrisConfig.getEndpoint_deletePropertie() + id;
 
 		ResponseRest response = restTemplateProperty.getForObject(uri, ResponseRest.class);
 
 		// check response
-		if (response.getCodigo().equals("001")) {			
+		if (response.getCodigo().equals("001")) {
 			System.out.println("Se eliminó la propiedad: " + id + " con éxito");
 			this.setdatagrid(this.getDocument());
 		} else {
