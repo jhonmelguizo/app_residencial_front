@@ -107,14 +107,12 @@
 
 			</h:form>
 			
-			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
-				<p:commandButton value="Confirmar" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-fw fa-check" />
-				<p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-fw fa-close" />
-			</p:confirmDialog> 
+
 
 		</p:tab>
 		<p:tab title="Propiedades">
 			<h:form>
+			<p:growl id="growl3" life="2000" />
 				<h:panelGrid columns="2" cellpadding="10">
 					<p:graphicImage name="/imagenes/user_properties.svg" width="100"
 						height="100" />
@@ -131,15 +129,13 @@
 					</p:selectOneMenu>
 					<p:growl id="growlproperty" life="2000" />
 					<p:commandButton value="Agregar Propiedad" id="ajax"
-						update="basicDT"
+						update="basicDT2,growl3"
 						action="#{associateproperty.addproperty(registrar.numeroDocumento)}"
 						style="margin-right:20px;" styleClass="ui-priority-primary" icon="fa fa-fw fa-plus-circle" />
 				</h:panelGrid>
 
-				<p:growl id="msgs" showDetail="true"
-					skipDetailIfEqualsSummary="true" />
-
-				<p:dataTable id="basicDT" var="prop"
+				
+				<p:dataTable id="basicDT2" var="prop"
 					value="#{associateproperty.listproxuser}">
 					<f:facet name="header">
             		Propiedades del usuario
@@ -153,11 +149,18 @@
 					<p:column headerText="Tipo">
 						<h:outputText value="#{prop.fktype}" />
 					</p:column>
-
+					<p:column style="text-align: center" >	     
+					    <p:commandButton id="RemovePropertie" value="Eliminar" action="#{associateproperty.delete(prop.id)}" update="basicDT2" icon="fa fa-fw fa-remove">
+					        <p:confirm header="Confirmar" message="Está seguro de eliminar la propiedad?" icon="fa fa-fw fa-bell-o" />
+					    </p:commandButton>					     					    
+		        	</p:column>
 				</p:dataTable>
 			</h:form>
 		</p:tab>
 	</p:tabView>
-
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
+		<p:commandButton value="Confirmar" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-fw fa-check" />
+		<p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-fw fa-close" />
+	</p:confirmDialog> 
 </h:body>
 </html>

@@ -71,12 +71,6 @@ public class AssociateProperty {
 	public void setListtypeproperty(Map<String, Integer> listtypeproperty) {
 		this.listtypeproperty = listtypeproperty;
 	}
-	
-	
-	
-	
-
-
 
 	public List<PropertyxUser> getListproxuser() {
 		return listproxuser;
@@ -111,11 +105,7 @@ public class AssociateProperty {
 		}
 		
 		System.out.print("Esta es la cantidad"+this.listproxuser.size());
-		
 	
-		
-		
-
 	}
 
 	public TypeProperty[] getlistypeproperty() {
@@ -137,6 +127,8 @@ public class AssociateProperty {
 	}
 
 	public String addproperty(String document) {
+		
+		this.document = document;
 
 		System.out.print("este es el id"+document+ "Este es el idproperty"+ this.idtypeproperty+ "name"+this.name);
 		Property property = new Property(this.name, this.idtypeproperty, document);
@@ -179,6 +171,23 @@ public class AssociateProperty {
 			this.listproxuser.add(masterproxuser);
 		}
 		
+	}
+	
+public String delete(String id) {		
+
+		String uri = UrisConfig.getEndpoint_deletePropertie() + id;
+
+		ResponseRest response = restTemplateProperty.getForObject(uri, ResponseRest.class);
+
+		// check response
+		if (response.getCodigo().equals("001")) {			
+			System.out.println("Se eliminó la propiedad: " + id + " con éxito");
+			this.setdatagrid(this.getDocument());
+		} else {
+			System.out.println("Ocurrió un error eliminando la propiedad: " + response.getMensaje());
+		}
+
+		return ("Ok...");
 	}
 
 }

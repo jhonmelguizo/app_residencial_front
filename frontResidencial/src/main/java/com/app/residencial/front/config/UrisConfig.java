@@ -10,12 +10,21 @@ public class UrisConfig {
 	private static String endpoint_getPropertiesType="/api/getpropertiestype";
 	private static String endpoint_createProperty="/api/createproperty";
 	private static String endpoint_getListPropertyxUser="/api/propertyxuser/";
+	private static String endpoint_deletePropertie = "/api/deleteproperty/";
 	private static String endpoint_associateRoleUser = "/api/insertrole";
 	private static String endpoint_deleteRoleUser = "/api/deleterole/";
 	private static String endpoint_getListRolesUser = "/api/rolexuser/";
 	private static String endpoint_getUser = "/api/users/";
 
 
+
+	public static String getEndpoint_deletePropertie() {
+		return url_server + endpoint_deletePropertie;
+	}
+
+	public static void setEndpoint_deletePropertie(String endpoint_deletePropertie) {
+		UrisConfig.endpoint_deletePropertie = endpoint_deletePropertie;
+	}
 
 	public static String getEndpoint_deleteRoleUser() {
 		return url_server + endpoint_deleteRoleUser;

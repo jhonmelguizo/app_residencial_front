@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +24,7 @@ import com.app.residencial.front.entities.ResponseRest;
 import com.app.residencial.front.entities.Rol;
 import com.app.residencial.front.entities.RolUser;
 import com.app.residencial.front.entities.ListRolXUser;
+import com.app.residencial.front.services.MessageService;
 
 @Named("associaterole")
 public class AssociateRoles {
@@ -83,14 +82,14 @@ public class AssociateRoles {
 			System.out.println("Post Created");
 			System.out.println(response.getBody().getMensaje());
 			System.out.println(response.getBody().getCodigo());
-			addMessage(response.getBody().getMensaje());
+			MessageService.addMessage(response.getBody().getMensaje());
 
 			this.loadRolesUser();
 
 		} else {
 			System.out.println("Request Failed");
 			System.out.println(response.getStatusCode());
-			addMessage("Ocurrió un error creando el usuario: " + response.getStatusCode());
+			MessageService.addMessage("Ocurrió un error creando el usuario: " + response.getStatusCode());
 		}
 
 		return ("Ok...");
@@ -106,10 +105,10 @@ public class AssociateRoles {
 
 		// check response
 		if (response.getCodigo().equals("001")) {			
-			addMessage("Se eliminó el rol: " + id + " con éxito");
+			MessageService.addMessage("Se eliminó el rol: " + id + " con éxito");
 			this.loadRolesUser();
 		} else {
-			addMessage("Ocurrió un error eliminando el usuario: " + response.getMensaje());
+			MessageService.addMessage("Ocurrió un error eliminando el rol: " + response.getMensaje());
 		}
 
 		return ("Ok...");
@@ -142,10 +141,6 @@ public class AssociateRoles {
 		this.listRolXUser = new ArrayList<ListRolXUser>();
 
 		for (ListRolXUser masterListRolesXUser : listRoles) {
-			// System.out.println(masterListRolesXUser.getRole());
-			// this.listRolXUser.add(new
-			// ListRolXUser(masterListRolesXUser.getRole(),masterListRolesXUser.getId()));
-			// this.listRolXUser.add(new ListRolXUser("prueba","prueba"));
 			this.listRolXUser.add(masterListRolesXUser);
 		}
 
@@ -165,11 +160,6 @@ public class AssociateRoles {
 			roles.put(masterRol.getRole(), masterRol.getId());
 		}
 
-	}
-
-	public void addMessage(String summary) {
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
-		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 
 }
