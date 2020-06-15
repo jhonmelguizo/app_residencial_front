@@ -105,11 +105,11 @@ public class AssociateRoles {
 		ResponseRest response = restTemplateRoles.getForObject(uri, ResponseRest.class);
 
 		// check response
-		if (response.getCodigo().equals("001")) {
-			System.out.println("Se eliminó el rol " + id + " con éxito");
+		if (response.getCodigo().equals("001")) {			
+			addMessage("Se eliminó el rol: " + id + " con éxito");
 			this.loadRolesUser();
 		} else {
-			System.out.println("Ocurrió un error eliminando el usuario: " + response.getMensaje());
+			addMessage("Ocurrió un error eliminando el usuario: " + response.getMensaje());
 		}
 
 		return ("Ok...");
