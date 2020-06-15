@@ -102,12 +102,19 @@
 					<p:column headerText="Role">
 						<h:outputText value="#{listrol.role}" />
 					</p:column>
-					<p:column style="width:32px;text-align: center">
-
-					</p:column>
+					<p:column style="text-align: center" >	     
+					    <p:commandButton id="Remove" value="Eliminar" action="#{associaterole.delete(listrol.id)}" update="basicDT" icon="fa fa-fw fa-remove">
+					        <p:confirm header="Confirmar" message="Está seguro de eliminar el rol?" icon="fa fa-fw fa-bell-o" />
+					    </p:commandButton>					     					    
+		        	</p:column>
 				</p:dataTable>
 
 			</h:form>
+			
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
+				<p:commandButton value="Confirmar" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-fw fa-check" />
+				<p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-fw fa-close" />
+			</p:confirmDialog> 
 
 		</p:tab>
 		<p:tab title="Propiedades">

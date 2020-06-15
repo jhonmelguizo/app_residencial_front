@@ -34,11 +34,10 @@ public class AssociateRoles {
 	private List<ListRolXUser> listRolXUser;
 	private String document;
 
-
-	public List<ListRolXUser> getListRolXUser(){
+	public List<ListRolXUser> getListRolXUser() {
 		return listRolXUser;
 	}
-	
+
 	public Integer getRolid() {
 		return rolid;
 	}
@@ -47,38 +46,37 @@ public class AssociateRoles {
 		this.rolid = rolid;
 	}
 
-
 	public void ejecutar() {
 		System.out.println("Esto es una prueba");
 	}
 
 	@Bean
-	@Qualifier("restTemplateRoles")	
+	@Qualifier("restTemplateRoles")
 	public RestTemplate restTemplateRol() {
 		return new RestTemplate();
 	}
-	
+
 	@Autowired
 	@Qualifier("restTemplateRoles")
 	private RestTemplate restTemplateRoles;
 
-	public String register(String document) {	
-		
+	public String register(String document) {
+
 		this.document = document;
-		
+
 		// create headers
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-		RolUser roluser = new RolUser(this.rolid, document);		
+		RolUser roluser = new RolUser(this.rolid, document);
 
 		// build the request
 		HttpEntity<RolUser> request = new HttpEntity<>(roluser, headers);
 
 		// send POST request
-		ResponseEntity<ResponseRest> response = restTemplateRoles.postForEntity(UrisConfig.getEndpoint_associateRoleUser(), request,
-				ResponseRest.class);
+		ResponseEntity<ResponseRest> response = restTemplateRoles
+				.postForEntity(UrisConfig.getEndpoint_associateRoleUser(), request, ResponseRest.class);
 
 		// check response
 		if (response.getStatusCode() == HttpStatus.OK) {
@@ -86,10 +84,9 @@ public class AssociateRoles {
 			System.out.println(response.getBody().getMensaje());
 			System.out.println(response.getBody().getCodigo());
 			addMessage(response.getBody().getMensaje());
-			
+
 			this.loadRolesUser();
-			
-			
+
 		} else {
 			System.out.println("Request Failed");
 			System.out.println(response.getStatusCode());
@@ -99,11 +96,29 @@ public class AssociateRoles {
 		return ("Ok...");
 
 	}
-	
+
+	public String delete(String id) {
+		
+
+		String uri = UrisConfig.getEndpoint_deleteRoleUser() + id;
+
+		ResponseRest response = restTemplateRoles.getForObject(uri, ResponseRest.class);
+
+		// check response
+		if (response.getCodigo().equals("001")) {
+			System.out.println("Se eliminó el rol " + id + " con éxito");
+			this.loadRolesUser();
+		} else {
+			System.out.println("Ocurrió un error eliminando el usuario: " + response.getMensaje());
+		}
+
+		return ("Ok...");
+	}
+
 	public Map<String, Integer> getRoles() {
 		return roles;
 	}
-	
+
 	public Rol[] obtenerListaRoles() {
 
 		Rol[] result = restTemplateRoles.getForObject(UrisConfig.getEndpoint_getListRoles(), Rol[].class);
@@ -111,56 +126,50 @@ public class AssociateRoles {
 		return result;
 
 	}
-	
+
 	public ListRolXUser[] getRolesUser() {
 
 		String uri = UrisConfig.getEndpoint_getListRolesUser() + this.document;
-		
+
 		ListRolXUser[] result = restTemplateRoles.getForObject(uri, ListRolXUser[].class);
 
 		return result;
 
 	}
-	
+
 	public void loadRolesUser() {
 		ListRolXUser[] listRoles = this.getRolesUser();
 		this.listRolXUser = new ArrayList<ListRolXUser>();
-		
+
 		for (ListRolXUser masterListRolesXUser : listRoles) {
-		    //System.out.println(masterListRolesXUser.getRole());			    
-			//this.listRolXUser.add(new ListRolXUser(masterListRolesXUser.getRole(),masterListRolesXUser.getId()));
-			//this.listRolXUser.add(new ListRolXUser("prueba","prueba"));		    
+			// System.out.println(masterListRolesXUser.getRole());
+			// this.listRolXUser.add(new
+			// ListRolXUser(masterListRolesXUser.getRole(),masterListRolesXUser.getId()));
+			// this.listRolXUser.add(new ListRolXUser("prueba","prueba"));
 			this.listRolXUser.add(masterListRolesXUser);
 		}
-		
-		
+
 	}
-	
-	
-	
-	private Map<String, Integer> roles = new HashMap<String, Integer>();	
-	
+
+	private Map<String, Integer> roles = new HashMap<String, Integer>();
+
 	@PostConstruct
 	public void init() {
-		
-		// Lista de Roles		
+
+		// Lista de Roles
 		Rol[] listaRoles = this.obtenerListaRoles();
 		roles = new HashMap<String, Integer>();
-		
+
 		for (Rol masterRol : listaRoles) {
-		    //System.out.println(masterRol.getRole());
+			// System.out.println(masterRol.getRole());
 			roles.put(masterRol.getRole(), masterRol.getId());
 		}
-		
 
-							
 	}
-	
-	
+
 	public void addMessage(String summary) {
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
-	
 
 }
