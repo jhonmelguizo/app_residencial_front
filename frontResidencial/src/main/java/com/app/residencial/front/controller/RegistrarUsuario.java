@@ -24,6 +24,7 @@ import com.app.residencial.front.config.UrisConfig;
 import com.app.residencial.front.entities.ResponseRest;
 import com.app.residencial.front.entities.State;
 import com.app.residencial.front.entities.User;
+import com.app.residencial.front.services.MessageService;
 
 @Named("registrar")
 public class RegistrarUsuario {
@@ -147,11 +148,11 @@ public class RegistrarUsuario {
 			System.out.println("Post Created");
 			System.out.println(response.getBody().getMensaje());
 			System.out.println(response.getBody().getCodigo());
-			addMessage(response.getBody().getMensaje());
+			MessageService.addMessage(response.getBody().getMensaje());
 		} else {
 			System.out.println("Request Failed");
 			System.out.println(response.getStatusCode());
-			addMessage("Ocurrió un error creando el usuario: " + response.getStatusCode());
+			MessageService.addMessage("Ocurrió un error creando el usuario: " + response.getStatusCode());
 		}
 
 		return ("Ok...");
@@ -162,7 +163,7 @@ public class RegistrarUsuario {
 		User user = this.getUser(this.getNumeroDocumento());
 		
 		if(user != null) {
-			addMessage("Usuario encontrado");
+			MessageService.addMessage("Usuario encontrado");
 			this.setNombres(user.getNames());
 			this.setApellidos(user.getLastnames());
 			this.setEmail(user.getEmail());
@@ -172,16 +173,11 @@ public class RegistrarUsuario {
 			this.setState(user.getFkstate());
 		}
 		else {
-			addMessage("Usuario no encontrado");
+			MessageService.addMessage("Usuario no encontrado");
 		}
 		
 		return ("Ok");
 
-	}
-
-	public void addMessage(String summary) {
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
-		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
 
 	public State[] getListUsersStates() {

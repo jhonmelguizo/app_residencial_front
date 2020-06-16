@@ -11,7 +11,7 @@
 
 	<p:tabView>
 		<p:tab title="Registrar Usuario">
-			<h:form>				
+			<h:form>
 				<p:message for="idNumDocumento" display="icon" />
 				<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
 					<p:graphicImage name="/imagenes/user_add.svg" width="100"
@@ -26,40 +26,50 @@
 						<f:selectItem itemLabel="Cedula de Extranjeria" itemValue="CE" />
 					</p:selectOneMenu>
 					<p:outputLabel for="idNumDocumento" value="Numero de Documento" />
-					
+
 					<h:panelGrid columns="2">
-					
-					<p:inputText id="idNumDocumento" value="#{registrar.numeroDocumento}" required="true">
-						<f:validateLength minimum="5" maximum="16" />	
-					</p:inputText>
-					<p:commandButton process="@this,idNumDocumento" update="@form" value="Buscar" action="#{registrar.findUser}" icon="fa fa-fw fa-search" />
+
+						<p:inputText id="idNumDocumento"
+							value="#{registrar.numeroDocumento}" required="true">
+							<f:validateLength minimum="5" maximum="16" />
+						</p:inputText>
+						<p:commandButton process="@this,idNumDocumento" update="@form"
+							value="Buscar" action="#{registrar.findUser}"
+							icon="fa fa-fw fa-search" oncomplete="loadRolesUI();loadPropertiesUI()"/>						
 					</h:panelGrid>
-					
+
 					<p:outputLabel for="idnombres" value="Nombres" />
-					<p:inputText id="idnombres" value="#{registrar.nombres}" required="true">
-					<f:validateLength minimum="5" maximum="30" />
+					<p:inputText id="idnombres" value="#{registrar.nombres}"
+						required="true">
+						<f:validateLength minimum="5" maximum="30" />
 					</p:inputText>
 					<p:outputLabel for="idapellidos" value="Apellidos" />
-					<p:inputText id="idapellidos" value="#{registrar.apellidos}" required="true">
-					<f:validateLength minimum="5" maximum="30" />
+					<p:inputText id="idapellidos" value="#{registrar.apellidos}"
+						required="true">
+						<f:validateLength minimum="5" maximum="30" />
 					</p:inputText>
 					<p:outputLabel for="idemail" value="Email" />
-					<p:inputText id="idemail" value="#{registrar.email}" validatorMessage="Por favor escriba un email válido" required="true">
-					<f:validateRegex
-                       pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+					<p:inputText id="idemail" value="#{registrar.email}"
+						validatorMessage="Por favor escriba un email válido"
+						required="true">
+						<f:validateRegex
+							pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
 					</p:inputText>
 					<p:outputLabel for="idDireccionEnv" value="Dirección de Envío" />
-					<p:inputText id="idDireccionEnv" value="#{registrar.dirEnvio}" required="true">
-					<f:validateLength maximum="50" />
+					<p:inputText id="idDireccionEnv" value="#{registrar.dirEnvio}"
+						required="true">
+						<f:validateLength maximum="50" />
 					</p:inputText>
-					<p:outputLabel for="idTel" value="Teléfono" />					
-					<p:inputMask id="idTel" value="#{registrar.telefono}" mask="9999999" required="true"/>
+					<p:outputLabel for="idTel" value="Teléfono" />
+					<p:inputMask id="idTel" value="#{registrar.telefono}"
+						mask="9999999" required="true" />
 					<p:outputLabel for="idCel" value="Celular" />
-					<p:inputMask id="idCel" value="#{registrar.celular}" mask="9999999999" required="true"/>
+					<p:inputMask id="idCel" value="#{registrar.celular}"
+						mask="9999999999" required="true" />
 
 					<p:outputLabel for="@next" value="Estado usuario: " />
 					<p:selectOneMenu id="sateUser" value="#{registrar.state}"
-						effect="fold" editable="false">						
+						effect="fold" editable="false">
 						<f:selectItems value="#{registrar.states}" />
 					</p:selectOneMenu>
 					<p:growl id="growl" life="2000" />
@@ -70,8 +80,8 @@
 			</h:form>
 		</p:tab>
 		<p:tab title="Asociar Rol">
-			<h:form>
-			<p:growl id="grow2" life="2000" />
+			<h:form id="formRol">
+				<p:growl id="grow2" life="2000" />
 				<h:panelGrid columns="2" cellpadding="10">
 					<p:graphicImage name="/imagenes/user_rol.svg" width="100"
 						height="100" />
@@ -82,9 +92,13 @@
 						<f:selectItems value="#{associaterole.roles}" />
 					</p:selectOneMenu>
 					<p:growl id="growl2" life="2000" />
-					<p:commandButton value="Asociar Rol" id="ajax" update="basicDT,growl2"
+					<p:commandButton value="Asociar Rol" id="ajaxInsertRol"
+						update="basicDT,growl2"
 						action="#{associaterole.register(registrar.numeroDocumento)}"
-						style="margin-right:20px;" styleClass="ui-priority-primary" icon="fa fa-fw fa-sitemap"/>
+						style="margin-right:20px;" styleClass="ui-priority-primary"
+						icon="fa fa-fw fa-sitemap" />
+						<p:remoteCommand name="loadRolesUI"	update="basicDT"
+						action="#{associaterole.loadRolesUser(registrar.numeroDocumento)}"/>
 				</h:panelGrid>
 
 				<p:dataTable id="basicDT" var="listrol"
@@ -98,21 +112,23 @@
 					<p:column headerText="Role">
 						<h:outputText value="#{listrol.role}" />
 					</p:column>
-					<p:column style="text-align: center" headerText="Opciones" >	     
-					    <p:commandButton id="Remove" value="Eliminar" action="#{associaterole.delete(listrol.id)}" update="basicDT" icon="fa fa-fw fa-remove">
-					        <p:confirm header="Confirmar" message="Está seguro de eliminar el rol?" icon="fa fa-fw fa-bell-o" />
-					    </p:commandButton>					     					    
-		        	</p:column>
+					<p:column style="text-align: center" headerText="Opciones">
+						<p:commandButton id="Remove" value="Eliminar"
+							action="#{associaterole.delete(listrol.id)}" update="basicDT"
+							icon="fa fa-fw fa-remove">
+							<p:confirm header="Confirmar"
+								message="Está seguro de eliminar el rol?"
+								icon="fa fa-fw fa-bell-o" />
+						</p:commandButton>
+					</p:column>
 				</p:dataTable>
 
 			</h:form>
-			
-
 
 		</p:tab>
 		<p:tab title="Propiedades">
 			<h:form>
-			<p:growl id="growl3" life="2000" />
+				<p:growl id="growl3" life="2000" />
 				<h:panelGrid columns="2" cellpadding="10">
 					<p:graphicImage name="/imagenes/user_properties.svg" width="100"
 						height="100" />
@@ -130,10 +146,13 @@
 					<p:commandButton value="Agregar Propiedad" id="ajax"
 						update="basicDT2,growl3"
 						action="#{associateproperty.addproperty(registrar.numeroDocumento)}"
-						style="margin-right:20px;" styleClass="ui-priority-primary" icon="fa fa-fw fa-plus-circle" />
+						style="margin-right:20px;" styleClass="ui-priority-primary"
+						icon="fa fa-fw fa-plus-circle" />
+					<p:remoteCommand name="loadPropertiesUI" update="basicDT2"
+						action="#{associateproperty.setdatagrid(registrar.numeroDocumento)}"/>
 				</h:panelGrid>
 
-				
+
 				<p:dataTable id="basicDT2" var="prop"
 					value="#{associateproperty.listproxuser}">
 					<f:facet name="header">
@@ -148,18 +167,24 @@
 					<p:column headerText="Tipo">
 						<h:outputText value="#{prop.fktype}" />
 					</p:column>
-					<p:column style="text-align: center" headerText="Opciones" >	     
-					    <p:commandButton id="RemovePropertie" value="Eliminar" action="#{associateproperty.delete(prop.id)}" update="basicDT2" icon="fa fa-fw fa-remove">
-					        <p:confirm header="Confirmar" message="Está seguro de eliminar la propiedad?" icon="fa fa-fw fa-bell-o" />
-					    </p:commandButton>					     					    
-		        	</p:column>
+					<p:column style="text-align: center" headerText="Opciones">
+						<p:commandButton id="RemovePropertie" value="Eliminar"
+							action="#{associateproperty.delete(prop.id)}" update="basicDT2"
+							icon="fa fa-fw fa-remove">
+							<p:confirm header="Confirmar"
+								message="Está seguro de eliminar la propiedad?"
+								icon="fa fa-fw fa-bell-o" />
+						</p:commandButton>
+					</p:column>
 				</p:dataTable>
 			</h:form>
 		</p:tab>
 	</p:tabView>
-	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
-		<p:commandButton value="Confirmar" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-fw fa-check" />
-		<p:commandButton value="Cancelar" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-fw fa-close" />
-	</p:confirmDialog> 
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		<p:commandButton value="Confirmar" type="button"
+			styleClass="ui-confirmdialog-yes" icon="fa fa-fw fa-check" />
+		<p:commandButton value="Cancelar" type="button"
+			styleClass="ui-confirmdialog-no" icon="fa fa-fw fa-close" />
+	</p:confirmDialog>
 </h:body>
 </html>

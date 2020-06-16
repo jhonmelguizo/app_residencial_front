@@ -150,6 +150,16 @@ public class AssociateRoles {
 		}
 
 	}
+	
+	public void loadRolesUser(String document) {
+		if (document.equals("")) {
+			System.out.println("Se requiere numero de documento para cargar la lista de roles");
+		} else {
+			this.document = document;
+			this.loadRolesUser();
+			System.out.println("Se cargó con exito la lista de roles del usuario: " + document);
+		}
+	}
 
 	private Map<String, Integer> roles = new HashMap<String, Integer>();
 
