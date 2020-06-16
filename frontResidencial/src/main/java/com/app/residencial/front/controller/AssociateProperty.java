@@ -165,7 +165,7 @@ public class AssociateProperty {
 	}
 
 	public void setdatagrid(String document) {
-
+		this.document = document;
 		this.listproxuser = new ArrayList<PropertyxUser>();
 		PropertyxUser[] listproxuser = this.getlistpropertyxuser(document);
 		for (PropertyxUser masterproxuser : listproxuser) {

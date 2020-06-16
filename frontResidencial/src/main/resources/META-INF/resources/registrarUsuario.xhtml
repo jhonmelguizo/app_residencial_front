@@ -127,7 +127,7 @@
 
 		</p:tab>
 		<p:tab title="Propiedades">
-			<h:form>
+			<h:form id="formProperties">
 				<p:growl id="growl3" life="2000" />
 				<h:panelGrid columns="2" cellpadding="10">
 					<p:graphicImage name="/imagenes/user_properties.svg" width="100"
@@ -142,8 +142,7 @@
 						editable="false">
 						<f:selectItems value="#{associateproperty.listtypeproperty}" />
 					</p:selectOneMenu>
-					<p:growl id="growlproperty" life="2000" />
-					<p:commandButton value="Agregar Propiedad" id="ajax"
+					<p:commandButton value="Agregar Propiedad" id="ajaxInsertProperties"
 						update="basicDT2,growl3"
 						action="#{associateproperty.addproperty(registrar.numeroDocumento)}"
 						style="margin-right:20px;" styleClass="ui-priority-primary"
@@ -151,7 +150,6 @@
 					<p:remoteCommand name="loadPropertiesUI" update="basicDT2"
 						action="#{associateproperty.setdatagrid(registrar.numeroDocumento)}"/>
 				</h:panelGrid>
-
 
 				<p:dataTable id="basicDT2" var="prop"
 					value="#{associateproperty.listproxuser}">
